@@ -1,14 +1,5 @@
 import mlflow
 import numpy as np
-from churn_detection.model.eval import get_all_metrics  #
-from churn_detection.utils.config import (
-    MLFLOW_TRACKING_URL,
-    binary_cols,
-    categorical_cols,
-    categorical_cols_mapping,
-    ohe_cols,
-)  #
-from churn_detection.utils.io import split_train_test  #
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as imbpipeline
 from optuna.integration import OptunaSearchCV
@@ -17,6 +8,16 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV, cross_validate
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
+
+from mlutils.automl.eval import get_all_metrics  #
+from mlutils.utils.config import (
+    MLFLOW_TRACKING_URL,
+    binary_cols,
+    categorical_cols,
+    categorical_cols_mapping,
+    ohe_cols,
+)  #
+from mlutils.utils.io import split_train_test  #
 
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URL)
 
