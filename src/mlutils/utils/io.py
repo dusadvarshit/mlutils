@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -17,8 +19,8 @@ def read_local_data(path: str, target_col: str) -> tuple:
     df.loc[(df[df["TotalCharges"] == 0]).index, "TotalCharges"] = df.loc[(df[df["TotalCharges"] == 0]).index, "MonthlyCharges"]
     df.set_index("customerID", inplace=True)
 
-    X = df.drop("Churn", axis=1)
-    y = df["Churn"].map({"Yes": 1, "No": 0})
+    X = df.drop(target_col, axis=1)
+    y = df[target_col].map({"Yes": 1, "No": 0})
 
     return X, y
 
@@ -39,5 +41,12 @@ def split_train_test(X: pd.DataFrame, y: pd.DataFrame) -> tuple:
     return X_train, X_test, y_train, y_test
 
 
-def export_img():
-    pass
+def find_git_root():
+    start_path = Path.cwd()
+
+    current = start_path
+    while current != current.parent:
+        if (current / ".git").exists():
+            return current
+        current = current.parent
+    return None
