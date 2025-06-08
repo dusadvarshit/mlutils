@@ -4,6 +4,12 @@ from contextlib import suppress
 from azure.identity import ClientSecretCredential
 from azure.storage.blob import BlobServiceClient
 
+## Accessing .env file
+from dotenv import load_dotenv
+
+load_dotenv()
+####
+
 # Azure credentials and storage details
 tenant_id = os.environ["AZURE_TENANT_ID"]
 client_id = os.environ["AZURE_CLIENT_ID"]
