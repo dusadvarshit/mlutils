@@ -194,7 +194,7 @@ cython_debug/
 .cursorindexingignore
 
 ## Ignore mflow sh
-mlflow.sh
+## mlflow.sh
 
 ## Ignore data folder
 data/
