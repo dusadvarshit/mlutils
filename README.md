@@ -148,6 +148,12 @@ Jupyter notebooks for data exploration and EDA are in the /notebooks directory.
 
 Training and test datasets should be placed in relevant subdirectories inside /data.
 
+# Future Directions
+* Support for neural networks
+* Support for tensorflow
+* Unifying cloud interface
+* Incorporating SHAP plots into mlflow artifacts
+* Enhancing unit test coverage
 
 # 🤝 Contributing
 
