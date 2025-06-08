@@ -3,7 +3,7 @@
 A modular, production-ready machine learning workflows library for general purpose modeling on tabular dataset.
 
 This repository combines best practices in machine learning engineering — data acquisition from kaggle , data pre-processing, model training and evaluation, tracking with MLflow, and rigorous code quality with pre-commit hooks and unit testing.
-The final working package can be installed as .whl binary and is shared along with the github repo.
+The final working package can be installed as .whl binary and can be built with simple commands after cloning this github repo.
 
 ---
 
@@ -30,7 +30,7 @@ The final working package can be installed as .whl binary and is shared along wi
 - ✅ End-to-end ML prediction (both regression & classification) workflow
 - ✅ Clean, modular Python codebase
 - ✅ MLflow for experiment tracking
-- ✅ Docker support for reproducible environments
+- ✅ Integration with top 3 cloud storage services
 - ✅ Pre-commit hooks (Black, Flake8, isort, etc.)
 - ✅ Pytest unit testing
 - ✅ Logging and configuration management
@@ -104,7 +104,12 @@ There are several pre-requisites to be able to use this functionality by simply 
 git clone https://github.com/mandrake-bio/mlutils
 cd mlutils
 
+## For local testing
 poetry install
+
+## For distributing production build
+poetry build
+pip install dist/mlutils-0.1.0-py3-none-any.whl
 
 ./mlflow.sh
 
@@ -113,7 +118,7 @@ poetry install
 ## 2. How to use?
 Please follow the jupyter notebook titled Tutorial.ipynb for detailed explanation on how to use the package.
 
-# 🧪 Running Tests
+## 3. Running Tests 🧪
 Use pytest to run all unit tests:
 ```
 pytest src/tests/
