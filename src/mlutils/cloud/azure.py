@@ -20,8 +20,8 @@ client_secret = os.environ["AZ_CLIENT_SECRET"]
 credential = ClientSecretCredential(tenant_id, client_id, client_secret)
 
 # Azure Storage account details
-storage_account_name = os.environ["AZURE_STORAGE_ACCOUNT_NAME"]
-container_name = os.environ["AZURE_CONTAINER_NAME"]
+storage_account_name = os.environ["AZ_STORAGE_ACCOUNT_NAME"]
+container_name = os.environ["AZ_CONTAINER_NAME"]
 
 # Create the BlobServiceClient using the storage account URL
 blob_service_client = BlobServiceClient(account_url=f"https://{storage_account_name}.blob.core.windows.net/", credential=credential)
