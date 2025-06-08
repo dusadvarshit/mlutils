@@ -198,3 +198,5 @@ mlflow.sh
 
 ## Ignore data folder
 data/
+## Ignore auth folder
+auth/
