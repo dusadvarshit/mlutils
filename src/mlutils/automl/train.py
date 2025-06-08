@@ -1,8 +1,10 @@
 import mlflow
 import numpy as np
+import pandas as pd
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as imbpipeline
 from optuna.integration import OptunaSearchCV
+from sklearn.base import BaseEstimator
 from sklearn.compose import ColumnTransformer
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV, cross_validate
@@ -22,7 +24,20 @@ from mlutils.utils.io import split_train_test  #
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URL)
 
 
-def build_preprocessor():
+def build_preprocessor() -> ColumnTransformer:
+    """
+    Creates a ColumnTransformer to preprocess categorical features.
+
+    Applies one-hot encoding to nominal columns, ordinal encoding to binary columns,
+    and ordinal encoding with category mappings to ordinal columns.
+
+    Returns:
+        ColumnTransformer: Transformer applying the specified encodings and returning a pandas DataFrame.
+
+    Note:
+        Assumes `ohe_cols`, `binary_cols`, `categorical_cols`, and `categorical_cols_mapping` are defined globally.
+    """
+
     ## Setting Encoders
     ohe = OneHotEncoder(sparse_output=False, handle_unknown="ignore").set_output(transform="pandas")
     ordinal_binary = OrdinalEncoder().set_output(transform="pandas")
@@ -39,7 +54,19 @@ def build_preprocessor():
     return preprocessor
 
 
-def build_pipeline(preprocessor, model, imbalanced=True) -> Pipeline:
+def build_pipeline(preprocessor: ColumnTransformer, model: BaseEstimator, imbalanced: bool = True) -> Pipeline:
+    """
+    Build a machine learning pipeline with optional SMOTE oversampling.
+
+    Args:
+        preprocessor: Transformer for preprocessing input data.
+        model: Estimator for classification or regression.
+        imbalanced (bool): If True, include SMOTE for imbalanced data handling.
+
+    Returns:
+        Pipeline: Configured sklearn Pipeline object.
+    """
+
     if imbalanced:
         smote = SMOTE(random_state=42)
         clf = imbpipeline(steps=[("preprocess", preprocessor), ("smote", smote), ("model", model)])
@@ -49,7 +76,23 @@ def build_pipeline(preprocessor, model, imbalanced=True) -> Pipeline:
     return clf
 
 
-def model_tune(X, y, model_name: str, model, param_grid: dict, search_algo: str, mlflow_expt_name: str):
+def model_tune(X: pd.DataFrame, y: pd.Series, model_name: str, model: BaseEstimator, param_grid: dict, search_algo: str, mlflow_expt_name: str):
+    """
+    Tunes a machine learning model using the specified search algorithm and logs results to MLflow.
+
+    Args:
+        X (pd.DataFrame or np.ndarray): Feature data.
+        y (pd.Series or np.ndarray): Target labels.
+        model_name (str): Name of the model run.
+        model: Scikit-learn compatible model instance.
+        param_grid (dict): Hyperparameter search space.
+        search_algo (str): Search strategy ("grid" or "bayesian").
+        mlflow_expt_name (str): Name of the MLflow experiment.
+
+    Returns:
+        None
+    """
+
     X_train, X_test, y_train, y_test = split_train_test(X, y)
 
     mlflow.set_experiment(mlflow_expt_name)
