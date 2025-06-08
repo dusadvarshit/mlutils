@@ -11,9 +11,9 @@ load_dotenv()
 ####
 
 # Azure credentials and storage details
-tenant_id = os.environ["AZURE_TENANT_ID"]
-client_id = os.environ["AZURE_CLIENT_ID"]
-client_secret = os.environ["AZURE_CLIENT_SECRET"]
+tenant_id = os.environ["AZ_TENANT_ID"]
+client_id = os.environ["AZ_CLIENT_ID"]
+client_secret = os.environ["AZ_CLIENT_SECRET"]
 
 
 # Authenticate using service principal
