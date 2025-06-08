@@ -69,19 +69,30 @@ tests/
 ## 0. Pre-requisites
 There are several pre-requisites to be able to use this functionality by simply cloning and installing the python package as it is.
 
-*
+* Poetry should be installed in the base python environment. Dev system used conda to build the base working virtual environment and poetry to handle all further dependencies.
+
+* To use mlflow with a cloud backend - an object store and the remote database needs to be created.
+    * This project is using AWS RDS (using postgres) as the backend database and AWS S3 as the artifact store.
+    * To reproduce the same, AWS credentials need to be pre-configured inside the env either via aws cli or via .env file.
+    * Postgres db connection string needs to be provided
+    * For using another backend store natively compatible with mlflow, please pass their db connection string and backend store url
 
 ## 1. Clone the Repository
 ```
 git clone https://github.com/mandrake-bio/mlutils
 cd mlutils
+
+poetry install
+
+./mlflow.sh
+
 ```
 
 
 # 🧪 Running Tests
 Use pytest to run all unit tests:
 ```
-pytest tests/
+pytest src/tests/
 ```
 
 For test coverage:
