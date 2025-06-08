@@ -1,6 +1,11 @@
 import os
 
+## Accessing .env file
+from dotenv import load_dotenv
 from google.cloud import storage
+
+load_dotenv()
+####
 
 # Path to your service account key
 SERVICE_ACCOUNT_JSON = os.environ["GCP_SERVICE_ACCOUNT_JSON"]
