@@ -110,7 +110,8 @@ poetry install
 
 ```
 
-## 2. Clone the Repository
+## 2. How to use?
+Please follow the jupyter notebook titled Tutorial.ipynb for detailed explanation on how to use the package.
 
 # 🧪 Running Tests
 Use pytest to run all unit tests:
@@ -124,15 +125,12 @@ pytest --cov=mlutils tests/
 ```
 
 
-
 # 🧰 Development Practices
 This repository follows strict development standards:
 
 Git version control
 
-Pre-commit hooks for linting, formatting, and secrets
-
-Docker for repeatable environments
+Pre-commit hooks for linting, syntax errors, formatting, and secrets
 
 MLflow for reproducible ML experiments
 
@@ -144,8 +142,6 @@ Unit tests for all major components.
 Jupyter notebooks for data exploration and EDA are in the /notebooks directory.
 
 Training and test datasets should be placed in relevant subdirectories inside /data.
-
-
 
 
 # 🤝 Contributing
