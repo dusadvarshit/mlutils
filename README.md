@@ -74,10 +74,32 @@ There are several pre-requisites to be able to use this functionality by simply 
 * To use mlflow with a cloud backend - an object store and the remote database needs to be created.
     * This project is using AWS RDS (using postgres) as the backend database and AWS S3 as the artifact store.
     * To reproduce the same, AWS credentials need to be pre-configured inside the env either via aws cli or via .env file.
+    * A backend store either locally or remotely needs to be created. Same thing applies to a backend db as well.
     * Postgres db connection string needs to be provided
     * For using another backend store natively compatible with mlflow, please pass their db connection string and backend store url
+    * In case you want to run the local mlflow server, uncomment the commands following the comment starting with "For local testing..." and comment the current commands.
 
-## 1. Clone the Repository
+* To use the respective cloud services their respective credentials need to be passed to the working environment.
+    * For local uses, a simple .env file inside the current repo is sufficient. The gitignore config already excludes .env files thus voiding the chances of accidentally committing confidential secrets.
+    * For additional security, the ENV variables can be set globally directly from terminal or a bash script outside the repo.
+    * For production use cases, it is best to use a managed service such as AWS KMS/Hashicorp Vault or equivalent to pass env variables.
+    * For simpler production cases such as an isolated service deployed on ECS one can specify ENV var directly in task specification or link to a file. (This is AWS specific, follow other vendors' docs for their specific steps)
+    * ENV VARS that can be specified. None of them are a must unless the specific service is meant to be used.
+        * KAGGLE_KEY
+        * KAGGLE_USERNAME
+        * KAGGLEHUB_CACHE
+        * AZ_TENANT_ID
+        * AZ_CLIENT_ID
+        * AZ_CLIENT_SECRET
+        * AZ_STORAGE_ACCOUNT_NAME
+        * AZ_CONTAINER_NAME
+        * GCP_SERVICE_ACCOUNT_JSON
+        * AWS_ACCESS_KEY_ID
+        * AWS_SECRET_ACCESS_KEY
+        * AWS_DEFAULT_REGION
+        * POSTGRES_DB
+
+## 1. Package install
 ```
 git clone https://github.com/mandrake-bio/mlutils
 cd mlutils
@@ -88,6 +110,7 @@ poetry install
 
 ```
 
+## 2. Clone the Repository
 
 # 🧪 Running Tests
 Use pytest to run all unit tests:
@@ -120,11 +143,10 @@ Unit tests for all major components.
 # 📁 Notebooks & Data
 Jupyter notebooks for data exploration and EDA are in the /notebooks directory.
 
-Training and test datasets should be placed in /data.
+Training and test datasets should be placed in relevant subdirectories inside /data.
 
-Models are saved to /models.
 
-None of these folders are put into .gitignore purposefully to make this entire notebook reproducible.
+
 
 # 🤝 Contributing
 
