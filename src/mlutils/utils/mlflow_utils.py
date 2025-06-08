@@ -6,7 +6,6 @@ from mlutils.utils.logger import CustomLogger
 
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URL)
 
-
 logger = CustomLogger("mlflow-utils").get_logger()
 
 
@@ -22,17 +21,23 @@ def fetch_model(model_name: str):
     """
     client = mlflow.tracking.MlflowClient()
 
-    # Get the latest staging model version
+    # Get the latestmodel version
     try:
-        model_version = client.get_latest_versions(model_name)[0]
-        logger.info(f"Model version {model_version}")
-        model_uri = f"models:/{model_name}/latest"
+        # Fetch all versions of the model
+        versions = client.search_model_versions(f"name='{model_name}'")
+
+        # Find the latest version by version number
+        latest_version = max(versions, key=lambda v: int(v.version))
+
+        # Get the run ID or artifact URI if needed
+        logger.info(f"Latest version: {latest_version.version}")
+        logger.info(f"Status: {latest_version.current_stage}")
+        logger.info(f"Artifact URI: {latest_version.source}")
 
         # Load the model
-        model = mlflow.sklearn.load_model(model_uri)
-        print(f"Successfully loaded model version {model_version.version} from staging")
+        model = mlflow.sklearn.load_model(latest_version.source)
         return model
 
     except Exception as e:
-        print(f"Error fetching staging model: {str(e)}")
+        logger.warning(f"Error fetching {model_name} model: {str(e)}")
         return None

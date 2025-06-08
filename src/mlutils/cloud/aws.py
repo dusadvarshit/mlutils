@@ -39,3 +39,24 @@ def generate_presigned_url(s3_filename, expiration=3600 * 24 * 7):
         return None
 
     return response
+
+
+##
+def create_bucket():
+    pass
+
+
+def list_buckets():
+    pass
+
+
+def delete_bucket(bucket_name):
+    pass
+
+
+def list_objects(bucket_name):
+    pass
+
+
+def generate_presigned_url_for_object(bucket_name, object_key, expiration=3600):
+    pass
