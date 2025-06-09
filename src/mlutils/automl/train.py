@@ -30,7 +30,8 @@ def find_high_cardinality_features(df: pd.DataFrame, threshold: int = 10) -> lis
     Returns:
         list: A list of column names that are considered high cardinality.
     """
-    return [col for col in df.columns if df[col].nunique() > threshold]
+
+    return [col for col in df.select_dtypes(include=["object", "category"]).columns if df[col].nunique() > threshold]
 
 
 def build_preprocessor(num_cols, categorical_cols) -> ColumnTransformer:
