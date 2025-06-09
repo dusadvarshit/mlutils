@@ -1,0 +1,39 @@
+name: PR - Build / Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  FORCE_COLOR: "1" # Make tools pretty
+  PYTHONUNBUFFERED: "1"
+  PYTHON_LATEST: "3.10"
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{env.PYTHON_LATEST}}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{env.PYTHON_LATEST}}
+
+      - name: Install Poetry
+        run: python3 -m pip install --upgrade poetry
+
+      - name: Install dependencies
+        run: poetry install --with dev
+
+      - name: Run Tests
+        id: test_step
+        run: poetry run pytest "${{github.workspace}}/src/tests/"
+        if: always()
