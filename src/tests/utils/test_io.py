@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from mlutils.utils.io import find_git_root, read_local_data, split_train_test
+from mlutils.utils.io import find_git_root, read_local_data, remove_high_null_features, split_train_test
 
 
 def test_read_local_data_classify(monkeypatch, sample_csv_classify, sample_dataset_classify):
@@ -75,3 +75,43 @@ def test_find_git_root(tmp_path, monkeypatch):
     result = find_git_root()
 
     assert result == project
+
+
+def test_remove_high_null_features_basic_case():
+    data = {"A": [1, None, None, None], "B": [1, 2, 3, 4], "C": [None, None, None, None], "D": [1, None, 3, 4]}
+    df = pd.DataFrame(data)
+
+    result = remove_high_null_features(df, threshold=0.5)
+
+    # Columns A and C should be dropped (75% and 100% nulls respectively)
+    assert "A" not in result.columns
+    assert "C" not in result.columns
+    assert "B" in result.columns
+    assert "D" in result.columns
+    assert result.shape[1] == 2  # Only B and D should remain
+
+
+def test_remove_high_null_features_all_below_threshold():
+    df = pd.DataFrame({"A": [1, 2, None], "B": [4, 5, 6]})
+    result = remove_high_null_features(df, threshold=0.8)
+    assert result.equals(df)  # No column should be removed
+
+
+def test_remove_high_null_features_all_above_threshold():
+    df = pd.DataFrame({"A": [None, None, None], "B": [None, 1, None]})
+    result = remove_high_null_features(df, threshold=0.3)
+    # Both should be dropped
+    assert result.empty
+    assert result.shape[1] == 0
+
+
+def test_remove_high_null_features_empty_df():
+    df = pd.DataFrame()
+    result = remove_high_null_features(df)
+    assert result.empty
+
+
+def test_remove_high_null_features_no_nulls():
+    df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
+    result = remove_high_null_features(df)
+    assert result.equals(df)

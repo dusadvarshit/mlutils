@@ -66,39 +66,6 @@ def remove_high_null_features(df: pd.DataFrame, threshold: float = 0.5) -> pd.Da
     return df.drop(columns=features_to_remove)
 
 
-def auto_divide_categorical_variables(df: pd.DataFrame, high_cardinality_threshold: int = 10) -> dict:
-    """
-    Automatically detects and categorizes categorical variables in a DataFrame.
-
-    Args:
-        df (pd.DataFrame): The input DataFrame.
-        high_cardinality_threshold (int): Threshold for high cardinality features. Default is 10.
-
-    Returns:
-        dict: A dictionary containing lists of column names categorized as:
-            - 'binary': Categorical variables with 2 unique values
-            - 'one_hot': Categorical variables with 3-10 unique values
-            - 'high_cardinality': Categorical variables with more than 10 unique values
-    """
-
-    categorical_vars = df.select_dtypes(include=["object", "category"]).columns.tolist()
-
-    binary_vars = []
-    one_hot_vars = []
-    high_cardinality_vars = []
-
-    for col in categorical_vars:
-        n_unique = df[col].nunique()
-        if n_unique == 2:
-            binary_vars.append(col)
-        elif n_unique <= high_cardinality_threshold:
-            one_hot_vars.append(col)
-        else:
-            high_cardinality_vars.append(col)
-
-    return {"binary": binary_vars, "one_hot": one_hot_vars, "high_cardinality": high_cardinality_vars}
-
-
 def read_local_data(my_dataset: MyDataset, null_threshold: float = 0.5) -> tuple:
     """
     Reads data from a CSV file into a pandas DataFrame.
