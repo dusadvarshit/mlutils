@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from mlutils.utils.io import read_local_data, split_train_test  # Replace with actual module name
+from mlutils.utils.io import find_git_root, read_local_data, split_train_test
 
 
 def test_read_local_data_classify(monkeypatch, sample_csv_classify, sample_dataset_classify):
@@ -59,3 +59,19 @@ def test_split_train_test():
     assert len(X_test) == 2
     assert len(y_train) == 8
     assert len(y_test) == 2
+
+
+def test_find_git_root(tmp_path, monkeypatch):
+    project = tmp_path / "project"
+    git_dir = project / ".git"
+    subdir = project / "subdir"
+
+    git_dir.mkdir(parents=True)
+    subdir.mkdir()
+
+    # Change current working directory to subdir
+    monkeypatch.chdir(subdir)
+
+    result = find_git_root()
+
+    assert result == project
