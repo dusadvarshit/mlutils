@@ -3,7 +3,9 @@ from sklearn.ensemble import (
 )
 from sklearn.linear_model import LogisticRegression
 
-models_param_grid = {
+from mlutils.utils.io import MyDataset
+
+classifier_param_grid = {
     "LogisticRegression": {
         "model": LogisticRegression(),
         "param_grid": {
@@ -83,3 +85,24 @@ models_param_grid = {
     #     },
     # },
 }
+
+dataset = MyDataset(
+    name="classification_dataset",
+    path="C:\\Users\\dusad\\Documents\\Projects\\agnei_consulting\\mlutils\\data\\datasets\\blastchar\\telco-customer-churn\\versions\\1\\WA_Fn-UseC_-Telco-Customer-Churn.csv",
+    target_col="Churn",
+    type="classification",
+    index_col="customerID",
+    label_encoding={"Yes": 1, "No": 0},
+    binary=True,
+    optimization_type="grid_search",
+    param_grid_map=classifier_param_grid,
+    imbalanced=True,
+    cross_val_scoring=[
+        "accuracy",
+        "precision",
+        "recall",
+        "f1",
+        "jaccard",
+        "mutual_info_score",
+    ],
+)
