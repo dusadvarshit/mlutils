@@ -10,8 +10,8 @@ def test_fetch_model_success():
         mock_class.sklearn.load_model.return_value = MagicMock()
 
         client = mock_class.tracking.MlflowClient()
-        client.get_latest_versions.return_value = [MagicMock()]
-        client.get_latest_versions.return_value[0].version.return_value = 1
+        client.search_model_versions.return_value = [MagicMock()]
+        client.search_model_versions.return_value[0].version.return_value = 1
 
         model = fetch_model("test-model")
 
