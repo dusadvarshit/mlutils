@@ -154,6 +154,7 @@ Training and test datasets should be placed in relevant subdirectories inside /d
 * Support for multi-label classification
     * Updating param_grid models to pass multi-label hyper-params
 * Allow for custom pre-processing and feature engineering
+* Adding data validation and post deployment ML observability (e.g. evidently etc.)
 * Support for neural networks
     * Add support for both pytorch and tensorflow
     * Integrate tf/pytorch nns directly with sklearn pipeline for tabular datasets
