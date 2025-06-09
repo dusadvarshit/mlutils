@@ -36,24 +36,3 @@ def param_grid_fix(models_param_grid, optimization_type: str):
             new_models_param_grid[key]["param_grid"][hyperparam] = clean_model_params(optimization_type, hyperparam_value)
 
     return new_models_param_grid
-
-
-ohe_cols = ["PaymentMethod"]
-binary_cols = ["gender", "Partner", "Dependents", "PhoneService", "PaperlessBilling"]
-categorical_cols = [
-    "MultipleLines",
-    "InternetService",
-    "OnlineSecurity",
-    "OnlineBackup",
-    "DeviceProtection",
-    "TechSupport",
-    "StreamingTV",
-    "StreamingMovies",
-    "Contract",
-]
-categorical_cols_mapping = [
-    ["No phone service", "No", "Yes"],
-    ["No", "DSL", "Fiber optic"],
-    *([["No internet service", "No", "Yes"]] * 6),
-    ["Month-to-month", "One year", "Two year"],
-]
