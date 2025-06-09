@@ -149,11 +149,25 @@ Jupyter notebooks for data exploration and EDA are in the /notebooks directory.
 Training and test datasets should be placed in relevant subdirectories inside /data.
 
 # Future Directions
+* Handle file formats outside of csv
+* Handle dataset comprised of multiple files
 * Support for multi-label classification
+    * Updating param_grid models to pass multi-label hyper-params
+* Allow for custom pre-processing and feature engineering
 * Support for neural networks
-* Support for tensorflow
-* Unifying cloud interface with a single class
-* Incorporating SHAP plots into mlflow artifacts
+    * Add support for both pytorch and tensorflow
+    * Integrate tf/pytorch nns directly with sklearn pipeline for tabular datasets
+    * Create new interface - for unstructured data: images, audio, natural language.
+* Cloud
+    * Unifying cloud interface with a single class
+    * Adding support for functionality beyond just storage:
+        * Interacting with LLMs
+        * Interacting with databases
+        * Analytics on cloud compute usage
+* MLFlow enhancements
+    * Incorporating SHAP plots into mlflow artifacts
+    * Automatically register model based on experiment metrics
+    * Automatically serve model
 * Enhancing unit test coverage
 
 # 🤝 Contributing
