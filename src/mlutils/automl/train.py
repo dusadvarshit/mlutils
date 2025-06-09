@@ -69,7 +69,7 @@ def build_preprocessor(num_cols, categorical_cols) -> ColumnTransformer:
     return preprocessor
 
 
-def build_pipeline(preprocessor: ColumnTransformer, model: BaseEstimator, imbalanced: bool = True) -> Pipeline:
+def build_pipeline(preprocessor: ColumnTransformer, model: BaseEstimator, imbalanced: bool = False) -> Pipeline:
     """
     Build a machine learning pipeline with optional SMOTE oversampling.
 
@@ -129,7 +129,7 @@ def cardinal_handling(X: pd.DataFrame, high_cardinality_features) -> pd.DataFram
     return X
 
 
-def model_tune(X: pd.DataFrame, y: pd.Series, model_name: str, model: BaseEstimator, param_grid: dict, search_algo: str, mlflow_expt_name: str, cross_val_scoring: list, evaluation_type: str = "classification") -> None:
+def model_tune(X: pd.DataFrame, y: pd.Series, model_name: str, model: BaseEstimator, param_grid: dict, search_algo: str, mlflow_expt_name: str, cross_val_scoring: list, evaluation_type: str = "classification", imbalanced: bool = False) -> None:
     """
     Tunes a machine learning model using the specified search algorithm and logs results to MLflow.
 
@@ -159,13 +159,13 @@ def model_tune(X: pd.DataFrame, y: pd.Series, model_name: str, model: BaseEstima
     with mlflow.start_run(run_name=model_name):
         print(f"---{model_name}----")
 
-        pipeline = build_pipeline(build_preprocessor(num_cols, categorical_cols), model)
+        pipeline = build_pipeline(build_preprocessor(num_cols, categorical_cols), model, imbalanced)
 
-        if search_algo == "bayesian":
+        if search_algo == "optuna_search":
             searcher = OptunaSearchCV(pipeline, param_grid, cv=5, scoring="recall", n_trials=50, n_jobs=-1)
-        elif search_algo == "grid":
+        elif search_algo == "grid_search":
             searcher = GridSearchCV(pipeline, param_grid, cv=5, scoring="recall", refit=True)
-        elif search_algo == "random":
+        elif search_algo == "random_search":
             searcher = RandomizedSearchCV(pipeline, param_grid, cv=5, scoring="recall", refit=True)
 
         mlflow.set_tag("developer", "Varshit Dusad")

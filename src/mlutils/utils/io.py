@@ -18,7 +18,7 @@ class MyDataset:
     cross_val_scoring = list = ["accuracy"]
     optimization_type: str = "grid_search"  # Default to grid search
     index_col: str | None = None  # Default to None, can be set to a specific column name
-    imbalanced: bool | None = False  # Default to not imbalanced, only for classification
+    imbalanced: bool = False  # Default to not imbalanced, only for classification
     binary: bool | None = True  # Default to not binary, only for classification
     label_encoding: dict | None = None  # Default to not using label encoder, only for classification
 
@@ -116,9 +116,9 @@ def read_local_data(my_dataset: MyDataset, null_threshold: float = 0.5) -> tuple
     df = remove_high_null_features(df, threshold=null_threshold)
 
     X = df.drop(my_dataset.target_col, axis=1)
+    y = df[my_dataset.target_col]
 
     if my_dataset.label_encoding:
-        y = df[my_dataset.target_col]
         y = y.map(my_dataset.label_encoding)
 
     return X, y
